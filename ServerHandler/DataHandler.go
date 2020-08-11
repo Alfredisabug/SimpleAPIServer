@@ -31,6 +31,7 @@ func handleGet(w http.ResponseWriter, r *http.Request) (err error) {
 	db := SqlControl.NewDataBaseConnect("SimpleDBOwner", "Newpassword")
 	err = db.Open()
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	defer db.Close()
@@ -40,12 +41,14 @@ func handleGet(w http.ResponseWriter, r *http.Request) (err error) {
 		_data := datatype.Data{}
 		err = rows.Scan(&_data.ID, &_data.DateAdded, &_data.Location.Lat, &_data.Location.Long)
 		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
 			return
 		}
 		datas = append(datas, _data)
 	}
 	output, err := json.Marshal(datas)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
@@ -57,6 +60,7 @@ func handlePost(w http.ResponseWriter, r *http.Request) (err error) {
 	db := SqlControl.NewDataBaseConnect("SimpleDBOwner", "Newpassword")
 	err = db.Open()
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -65,6 +69,7 @@ func handlePost(w http.ResponseWriter, r *http.Request) (err error) {
 	var data datatype.Data
 	err = decoder.Decode(&data)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
@@ -75,10 +80,11 @@ func handlePost(w http.ResponseWriter, r *http.Request) (err error) {
 
 	err = db.Insert(writeStrings)
 	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
 
 	return
 }
