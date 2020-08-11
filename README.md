@@ -1,15 +1,39 @@
 # About This
 
-## Query String
+Simple API Server 
 
-```SELECT Data.Id, Data.DateAdded, Location.Lat, Location.Long FROM Data inner join Location On Data.Id=Location.Id;```
+## Env
 
-## Write String
+OS: Ubuntu 18.04
+Language: go1.14.6 linux/amd64
+database: mysql Ver 14.14 Distrib 5.7.31, for Linux (x86_64) using  EditLine wrapper
 
-### Table:Data
+## API
 
-```INSERT INTO Data(DateAdded) VALUES(NOW());```
-
-### Table:Location
-
-```INSERT INTO Location() VALUES(LAST_INSERT_ID(), 100.0, 200.0);```
+```YAML
+/data:
+    Get:
+        description: 
+            取得db資料
+        responses:
+            "200":
+            description: Success
+    Post:
+        description:
+            增加db資料
+        parameters:
+            -ID:   string
+                in: body
+                description: ID，目前留空
+            -Location: object
+                in: body
+                parameters:
+                    -Lat:   float32
+                        description: T.B.D
+                    -Long: float32
+                        description: T.B.D
+                description: T.B.D
+            -DateAdded: time
+                in: body
+                description: 時間標記，目前留空
+```
