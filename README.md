@@ -4,9 +4,9 @@ Simple API Server
 
 ## Env
 
-OS: Ubuntu 18.04
-Language: go1.14.6 linux/amd64
-database: mysql Ver 14.14 Distrib 5.7.31, for Linux (x86_64) using  EditLine wrapper
+OS: Ubuntu 18.04  
+Language: go1.14.6 linux/amd64  
+database: mysql Ver 14.14 Distrib 5.7.31, for Linux (x86_64) using  EditLine wrapper  
 
 ## API
 
