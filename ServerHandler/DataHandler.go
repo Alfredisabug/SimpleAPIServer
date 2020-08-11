@@ -5,6 +5,7 @@ import (
 	datatype "SimpleAPIServer/DataType"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/http"
 )
 
@@ -58,6 +59,26 @@ func handlePost(w http.ResponseWriter, r *http.Request) (err error) {
 	if err != nil {
 		return
 	}
+
 	defer db.Close()
+	decoder := json.NewDecoder(r.Body)
+	var data datatype.Data
+	err = decoder.Decode(&data)
+	if err != nil {
+		return
+	}
+
+	writeStrings := []string{
+		"INSERT INTO Data(DateAdded) VALUES(NOW());",
+		fmt.Sprintf("INSERT INTO Location() VALUES(LAST_INSERT_ID(), '%v', '%v')", data.Location.Lat, data.Location.Long),
+	}
+
+	err = db.Insert(writeStrings)
+	if err != nil {
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+
 	return
 }
